@@ -1,0 +1,24 @@
+- name: Make sure downloads dir exists
+  file:
+    path: '{{ dir_downloads }}'
+    state: directory
+
+- name: Download jdk8
+  get_url:
+    url: '{{ url_download_jdk8 }}'
+    dest: '{{ dir_downloads }}{{ pkg_jdk8 }}'
+- name: Extract jdk8
+  unarchive:
+    src: '{{ dir_downloads }}{{ pkg_jdk8 }}'
+    dest: /opt/
+    remote_src: true
+
+- name: Download hadoop
+  get_url:
+    url: '{{ url_download_hadoop }}'
+    dest: '{{ dir_downloads }}{{ pkg_hadoop }}'
+- name: Extract hadoop
+  unarchive:
+    src: '{{ dir_downloads }}{{ pkg_hadoop }}'
+    dest: /opt/
+    remote_src: true

@@ -1,0 +1,4 @@
+---
+ansible_host: 10.0.2.11
+host_name: vh-1.polar.local
+host_ip: '{{ ansible_host }}'

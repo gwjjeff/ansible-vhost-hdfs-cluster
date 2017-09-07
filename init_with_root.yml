@@ -1,0 +1,5 @@
+---
+- hosts: 'clusterinit'
+  roles:
+    - init1
+    - init2

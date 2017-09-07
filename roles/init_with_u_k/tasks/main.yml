@@ -1,0 +1,6 @@
+---
+- ping:
+- name: Set up authorized keys for root user
+  authorized_key: user=root key="{{item}}"
+  with_file:
+    - authorized_keys

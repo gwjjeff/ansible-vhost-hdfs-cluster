@@ -1,0 +1,9 @@
+---
+dir_downloads: /install/
+url_download_root: http://10.0.2.2/downloads/
+
+pkg_jdk8: jdk-8u144-linux-x64.tar.gz 
+url_download_jdk8: '{{ url_download_root }}{{ pkg_jdk8 }}'
+
+pkg_hadoop: hadoop-2.7.4.tar.gz
+url_download_hadoop: '{{ url_download_root }}{{ pkg_hadoop }}'

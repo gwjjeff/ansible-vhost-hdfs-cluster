@@ -1,0 +1,4 @@
+---
+- hosts: 'clusterinit'
+  roles:
+    - init_with_u_k

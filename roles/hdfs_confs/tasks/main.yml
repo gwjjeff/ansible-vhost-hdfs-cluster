@@ -1,0 +1,60 @@
+---
+- name: Add user hdfs
+  user: name=hdfs
+
+- name: Set up authorized keys for user hdfs
+  authorized_key: user=hdfs key="{{item}}"
+  with_file:
+    - id_rsa_vhost2.pub
+    - id_rsa_vh.pub
+
+- name: Set up ssh client options
+  copy:
+    src: ssh_config
+    dest: ~hdfs/.ssh/config
+    owner: hdfs
+    group: hdfs
+
+- name: Set up ssh trust
+  copy:
+    src: id_rsa_vh
+    dest: ~hdfs/.ssh/
+    owner: hdfs
+    group: hdfs
+    mode: 0600
+
+- name: copy default conf files
+  shell: cp -r /opt/hadoop-2.7.4/etc/hadoop/. ~hdfs/conf
+
+- name: change owner of conf files
+  file:
+    path: ~hdfs/conf
+    state: directory
+    owner: hdfs
+    group: hdfs
+    recurse: yes
+
+- name: copy conf files
+  copy:
+    src: conf/
+    dest: ~hdfs/conf
+    owner: hdfs
+    group: hdfs
+
+- name: mkdir sure necessary dirs exist
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: hdfs
+    group: hdfs
+  with_items:
+    - ~hdfs/log
+    - ~hdfs/pid
+    - ~hdfs/bin
+    - ~hdfs/temp
+    - ~hdfs/bench
+
+- name: copy env profile
+  copy:
+    src: misc.sh
+    dest: /etc/profile.d/misc.sh

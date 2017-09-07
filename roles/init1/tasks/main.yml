@@ -1,0 +1,54 @@
+---
+- name: Add power user
+  user: name=jeff groups=wheel
+
+- name: Make sure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+
+- name: Set up authorized keys for power user
+  authorized_key: user=jeff key="{{item}}"
+  with_file:
+    - id_rsa_vhost2.pub
+    - id_rsa_vh.pub
+
+- name: Set up ssh client options for power user
+  copy:
+    src: ssh_config
+    dest: ~jeff/.ssh/config
+    owner: jeff
+    group: jeff
+
+- name: Set up ssh trust for power user on each node
+  copy:
+    src: id_rsa_vh
+    dest: ~jeff/.ssh/
+    owner: jeff
+    group: jeff
+    mode: 0600
+
+- hostname: name='{{ host_name }}'
+- lineinfile:
+    path: /etc/hosts
+    regexp: '^{{ host_ip }}'
+    line: '{{ host_ip }} {{ host_name }}'
+    owner: root
+    group: root
+    mode: 0644
+
+- name: stop iptables service
+  service:
+    name: '{{ item }}'
+    state: stopped
+    enabled: no
+  with_items:
+    - iptables
+    - ip6tables

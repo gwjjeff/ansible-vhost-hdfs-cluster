@@ -1,0 +1,8 @@
+StrictHostKeyChecking no
+UserKnownHostsFile /dev/null
+IdentityFile ~/.ssh/id_rsa_vh
+LogLevel                ERROR
+
+Host *
+        ServerAliveInterval 61
+        ServerAliveCountMax 2
