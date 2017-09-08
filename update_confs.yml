@@ -1,0 +1,4 @@
+---
+- hosts: 'clusterinit'
+  roles:
+    - hdfs_confs
